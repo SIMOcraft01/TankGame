@@ -20,6 +20,7 @@ var player1Y = 200;
 var player1Rotation = 0
 var player1W = 30;
 var player1H = 40;
+var canMove = true;
 
 function keyDownHandler(e)
 {
@@ -83,10 +84,37 @@ function drawImageRot(img,x,y,width,height,deg)
 	ctx.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
 }
 
+function direction()
+{
+	
+}
+
+function movement()
+{
+	if(leftPressed)
+	{
+		player1Rotation -= 1.4;
+	}
+	else if (rightPressed)
+	{
+		player1Rotation += 1.4;
+	}
+	else if (upPressed)
+	{
+		player1Y -= .8;
+	}
+	else if (downPressed)
+	{
+		player1Y += .8;
+	}
+}
+
+
 function draw()
 {
 	ctx.clearRect(0,0,800,600);
 	drawImageRot(tank1, player1X, player1Y, player1W, player1H, player1Rotation);
+	movement();
 }
 setInterval(draw, 10);
 </script>
