@@ -2,7 +2,7 @@
 <head>
 	<style>
 	*{padding: 0; margin:0;}
-	canvas{ background: #000; display: block; margin: 0 auto;}
+	canvas{ background: #eee; display: block; margin: 0 auto;}
 	</style>
 </head>
 
@@ -21,38 +21,33 @@ var player1Rotation = 0
 var player1W = 30;
 var player1H = 40;
 var canMove = true;
+var upPressed = false;
+var downPressed = false;
+var leftPressed = false;
+var rightPressed = false;
 
-function keyDownHandler(e)
-{
+function keyDownHandler(e){
 	if(e.keyCode == 38)
 	{
 		upPressed = true;
 		downPressed = false;
-		rightPressed = false;
-		leftPressed = false;
 	}
 	if(e.keyCode == 40)
 	{
 		downPressed = true;
 		upPressed = false;
-		rightPressed = false;
-		leftPressed = false;
 	}
 	if(e.keyCode == 37)
 	{
 		leftPressed = true;
-		downPressed = false;
 		rightPressed = false;
-		upPressed = false;
 	}
 	if(e.keyCode == 39)
 	{
 		rightPressed = true;
-		downPressed = false;
-		upPressed = false;
 		leftPressed = false;
 	}
-}
+	}
 	
 function keyUpHandler(e)
 {
@@ -95,17 +90,19 @@ function movement()
 	{
 		player1Rotation -= 1.4;
 	}
-	else if (rightPressed)
+	if (rightPressed)
 	{
 		player1Rotation += 1.4;
 	}
-	else if (upPressed)
+	if (upPressed)
 	{
-		player1Y -= .8;
+		player1X += Math.cos((90 + player1Rotation) * Math.PI / 180);
+		player1Y += Math.sin((90 + player1Rotation) * Math.PI / 180);
 	}
-	else if (downPressed)
+	if (downPressed)
 	{
-		player1Y += .8;
+		player1X -= Math.cos((90 + player1Rotation) * Math.PI / 180);
+		player1Y -= Math.sin((90 + player1Rotation) * Math.PI / 180);
 	}
 }
 
