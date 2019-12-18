@@ -18,13 +18,15 @@ tank1.src = "tank1.png";
 var player1X = 200;
 var player1Y = 200;
 var player1Rotation = 0
-var player1W = 30;
-var player1H = 40;
+var player1W = 40;
+var player1H = 30;
 var canMove = true;
 var upPressed = false;
 var downPressed = false;
 var leftPressed = false;
 var rightPressed = false;
+var mPressed = false;
+var bullets = [];
 
 function keyDownHandler(e){
 	if(e.keyCode == 38)
@@ -47,7 +49,11 @@ function keyDownHandler(e){
 		rightPressed = true;
 		leftPressed = false;
 	}
+	if(e.keyCode == 77)
+	{
+		mPressed = true;
 	}
+}
 	
 function keyUpHandler(e)
 {
@@ -67,6 +73,18 @@ function keyUpHandler(e)
 	{
 		rightPressed = false;
 	}
+	if(e.keyCode == 77)
+	{
+		mPressed = false;
+	}
+}
+
+function Bullet(x, y, speed, rotation)
+{
+	this.x = x;
+	this.y = x;
+	this.speed = speed;
+	this.rotation = rotation;
 }
 
 function drawImageRot(img,x,y,width,height,deg)
@@ -77,11 +95,6 @@ function drawImageRot(img,x,y,width,height,deg)
 	ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height);
 	ctx.rotate(rad * (-1));
 	ctx.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
-}
-
-function direction()
-{
-	
 }
 
 function movement()
@@ -96,24 +109,49 @@ function movement()
 	}
 	if (upPressed)
 	{
-		player1X += Math.cos((90 + player1Rotation) * Math.PI / 180);
-		player1Y += Math.sin((90 + player1Rotation) * Math.PI / 180);
+		player1X += Math.cos((player1Rotation) * Math.PI / 180);
+		player1Y += Math.sin((player1Rotation) * Math.PI / 180);
 	}
 	if (downPressed)
 	{
-		player1X -= Math.cos((90 + player1Rotation) * Math.PI / 180);
-		player1Y -= Math.sin((90 + player1Rotation) * Math.PI / 180);
+		player1X -= Math.cos((player1Rotation) * Math.PI / 180);
+		player1Y -= Math.sin((player1Rotation) * Math.PI / 180);
+	}
+	if(mPressed)
+	{
+		//Bullet(x, y, speed, rotation)
+		var x1 = player1X + (.6 * player1W);
+		var y1 = player1Y + (.5 * player1H);
+		bullets.push(new Bullet(x1, y1, 1, player1Rotation));
+		mPressed = false;
 	}
 }
 
+function drawBullet()
+{
+	for(var i = 0; i < bullets.length; i++)
+	{
+		ctx.fillStyle = "red";
+		ctx.fillRect(bullets[i].x, bullets[i].y, 3, 3);
+		bullets[i].x += Math.cos(bullets[i].rotation * Math.PI / 180);
+		bullets[i].y += Math.sin(bullets[i].rotation * Math.PI / 180);
+	}
+}
+
+function resetBullet()
+{
+	canFire = true;
+}
 
 function draw()
 {
 	ctx.clearRect(0,0,800,600);
 	drawImageRot(tank1, player1X, player1Y, player1W, player1H, player1Rotation);
 	movement();
+	drawBullet();
 }
 setInterval(draw, 10);
+setInterval(resetBullet, 30);
 </script>
 </body>
 </html>
