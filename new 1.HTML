@@ -72,6 +72,16 @@ explosion15.src = "tile014.png";
 var explosion16 = new Image();
 explosion16.src = "tile015.png";
 var animations = [];
+var startTime = 0;
+var endTime = 0;
+
+
+
+
+
+
+
+
 function keyDownHandler(e){
 	if(e.keyCode == 38)
 	{
@@ -157,6 +167,14 @@ function keyUpHandler(e){
 		spacePressed = false;
 	}
 }
+
+function currentSeconds() {
+  var time = new Date();
+  return time / 1000;
+};
+
+
+
 function xy(x,y){
      this.x = x;
      this.y = y;
@@ -171,6 +189,7 @@ this.x = x;
 this.y = y;
 this.speed = speed;
 this.rotation = rotation;
+this.timeOfBirth = currentSeconds();
 }
 function drawAnimations()
 {
@@ -461,11 +480,17 @@ var polygonC = new polygon(polygonCVertices,
 	{
 		//console.log("Player 1 was hit");
 		animations.push(new Animation(1, player1X - player1W/2, player1Y- player1H/2));
+		bullets.splice(i, 1);
 	}
-	if(sat(polygonC, polygonB))
+	else if(sat(polygonC, polygonB))
 	{
 		//console.log("Player 2 was hit");
 		animations.push(new Animation(1, player2X- player2W/2, player2Y- player2H/2));
+		bullets.splice(i, 1);
+	}
+	else if(currentSeconds() - bullets[i].timeOfBirth > 7)
+	{
+		bullets.splice(i, 1);
 	}
 	}
 	
