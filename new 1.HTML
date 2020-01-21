@@ -1,9 +1,9 @@
 <html>
 <head>
-<style>
-*{padding: 0; margin:0;}
-canvas{ background: #eee ; display: block; margin: 0 auto;}
-</style>
+	<style>
+	*{padding: 0; margin:0;}
+	canvas{ background: #0f0; display: block; margin: 0 auto;}
+	</style>
 </head>
 
 <body>
@@ -13,100 +13,109 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
-
 var tank1 = new Image();
 tank1.src = "tank1.png";
 var tank2 = new Image();
 tank2.src = "tank2.png";
-var player1X = 200;
-var player1Y = 200;
+var player1X =0;
+var player1Y =0;
+var player2X =400;
+var player2Y =400;
 var player1Rotation = 0;
-var player1H = 30;
 var player1W = 40;
-var player2X = 300;
-var player2Y = 200;
+var player1H = 30;
 var player2Rotation = 0;
-var player2H = 30;
 var player2W = 40;
+var player2H = 30;
 var upPressed = false;
 var downPressed = false;
 var rightPressed = false;
 var leftPressed = false;
-var shiftPressed = false;
-var upPressed2 = false;
-var downPressed2 = false;
-var rightPressed2 = false;
-var leftPressed2 = false;
+var zeroPressed = false;
+var wPressed = false;
+var sPressed = false;
+var dPressed = false;
+var aPressed = false;
 var spacePressed = false;
 var bullets = [];
 var canFire = true;
-
-function drawImageRot(img, x, y, width, height, deg)
-{
-	var rad = deg * Math.PI/ 180; // convert deg to radian
-	ctx.translate(x + width/ 2, y + height /2); //set orgin to center of image
-	ctx.rotate(rad); //rotate the canvas around the origin
-	ctx.drawImage(img,width/ 2 * (-1), height / 2 * (-1), width, height); // draws the image
-	//resets the canvas
-	ctx.rotate(rad * (-1));
-	ctx.translate((x + width / 2) * (-1), (y + height/2) * (-1));
-}
-
-
-function keyDownHandler(e)
-{
+var explosion1 = new Image();
+explosion1.src = "tile000.png";
+var explosion2 = new Image();
+explosion2.src = "tile001.png";
+var explosion3 = new Image();
+explosion3.src = "tile002.png";
+var explosion4 = new Image();
+explosion4.src = "tile003.png";
+var explosion5 = new Image();
+explosion5.src = "tile004.png";
+var explosion6 = new Image();
+explosion6.src = "tile005.png";
+var explosion7 = new Image();
+explosion7.src = "tile006.png";
+var explosion8 = new Image();
+explosion8.src = "tile007.png";
+var explosion9 = new Image();
+explosion9.src = "tile008.png";
+var explosion10 = new Image();
+explosion10.src = "tile009.png";
+var explosion11 = new Image();
+explosion11.src = "tile010.png";
+var explosion12 = new Image();
+explosion12.src = "tile011.png";
+var explosion13 = new Image();
+explosion13.src = "tile012.png";
+var explosion14 = new Image();
+explosion14.src = "tile013.png";
+var explosion15 = new Image();
+explosion15.src = "tile014.png";
+var explosion16 = new Image();
+explosion16.src = "tile015.png";
+var animations = [];
+function keyDownHandler(e){
 	if(e.keyCode == 38)
 	{
 		upPressed = true;
-		downPressed = false;
 	}
 	if(e.keyCode == 40)
 	{
 		downPressed = true;
-		upPressed = false;
 	}
 	if(e.keyCode == 37)
 	{
 		leftPressed = true;
-		rightPressed = false;
 	}
 	if(e.keyCode == 39)
 	{
 		rightPressed = true;
-		leftPressed = false;
 	}
-	if(e.keyCode == 16)
-	{
-		shiftPressed = true;
-	}
-	if(e.keyCode == 87)
-	{
-		upPressed2 = true;
-		downPressed2 = false;
-	}
-	if(e.keyCode == 83)
-	{
-		downPressed2 = true;
-		upPressed2 = false;
-	}
-	if(e.keyCode == 65)
-	{
-		leftPressed2 = true;
-		rightPressed2 = false;
-	}
-	if(e.keyCode == 68)
-	{
-		rightPressed2 = true;
-		leftPressed2 = false;
-	}
-	if(e.keyCode == 32)
+	if(e.keyCode == 32 && canFire2)
 	{
 		spacePressed = true;
 	}
-}
-
-function keyUpHandler(e)
-{
+	if(e.keyCode == 87)
+	{
+		wPressed = true;
+	}
+	if(e.keyCode == 65)
+	{
+		aPressed = true;
+	}
+	if(e.keyCode == 83)
+	{
+		sPressed = true;
+	}
+	if(e.keyCode ==68)
+	{
+		dPressed = true;
+	}
+	if(e.keyCode == 96 && canFire)
+	{
+		zeroPressed = true;
+	}
+	}
+	
+function keyUpHandler(e){
 	if(e.keyCode == 38)
 	{
 		upPressed = false;
@@ -123,104 +132,206 @@ function keyUpHandler(e)
 	{
 		rightPressed = false;
 	}
-	if(e.keyCode == 16)
-	{
-		shiftPressed = false;
-	}
 	if(e.keyCode == 87)
 	{
-		upPressed2 = false;
-	}
-	if(e.keyCode == 83)
-	{
-		downPressed2 = false;
+		wPressed = false;
 	}
 	if(e.keyCode == 65)
 	{
-		leftPressed2 = false;
+		aPressed = false;
 	}
-	if(e.keyCode == 68)
+	if(e.keyCode == 83)
 	{
-		rightPressed2 = false;
+		sPressed = false;
+	}
+	if(e.keyCode ==68)
+	{
+		dPressed = false;
+	}
+	if(e.keyCode == 96)
+	{
+		zeroPressed = false;
 	}
 	if(e.keyCode == 32)
 	{
 		spacePressed = false;
 	}
 }
-
-
-
+function xy(x,y){
+     this.x = x;
+     this.y = y;
+};
+function polygon(vertices, edges){
+     this.vertex = vertices;
+     this.edge = edges;
+};
+function Bullet(x, y, speed, rotation)
+{
+this.x = x;
+this.y = y;
+this.speed = speed;
+this.rotation = rotation;
+}
+function drawAnimations()
+{
+	for(var a = 0; a < animations.length; a++)
+	{
+		if(animations[a].type == 1)
+		{
+			if(animations[a].startIt == 0)
+			{
+				ctx.drawImage(explosion1, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 1)
+			{
+				ctx.drawImage(explosion2, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 2)
+			{
+				ctx.drawImage(explosion3, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 3)
+			{
+				ctx.drawImage(explosion4, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 4)
+			{
+				ctx.drawImage(explosion5, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 5)
+			{
+				ctx.drawImage(explosion6, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 6)
+			{
+				ctx.drawImage(explosion7, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 7)
+			{
+				ctx.drawImage(explosion8, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 8)
+			{
+				ctx.drawImage(explosion9, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 9)
+			{
+				ctx.drawImage(explosion10, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 10)
+			{
+				ctx.drawImage(explosion11, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 11)
+			{
+				ctx.drawImage(explosion12, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 12)
+			{
+				ctx.drawImage(explosion13, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 13)
+			{
+				ctx.drawImage(explosion14, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 14)
+			{
+				ctx.drawImage(explosion15, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 15)
+			{
+				ctx.drawImage(explosion16, animations[a].x, animations[a].y);
+			}
+			animations[a].animationDelay++;
+			if(animations[a].animationDelay == 8)
+			{
+			animations[a].startIt++;
+			animations[a].animationDelay = 0;
+			}
+			if(animations[a].startIt == 15)
+			{
+				animations.splice(a, 1);
+			}
+		}
+	}
+}
+function Animation(type, x, y)
+{
+	this.type = type;
+	this.x = x;
+	this.y = y;
+	this.stopIt = 16;
+	this.startIt = 0;
+	this.animationDelay = 0;
+}
+function drawImageRot(img,x,y,width,height,deg){
+    //Convert degrees to radian 
+    var rad = deg * Math.PI / 180;
+    //Set the origin to the center of the image
+    ctx.translate(x + width / 2, y + height / 2);
+    //Rotate the canvas around the origin
+    ctx.rotate(rad);
+    //draw the image    
+    ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height);
+    //reset the canvas  
+    ctx.rotate(rad * ( -1 ) );
+    ctx.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
+}
 function controls()
 {
 	if(leftPressed)
 	{
-		player1Rotation -= 1;
+	 player1Rotation -= 1;
 	}
 	if(rightPressed)
 	{
-		player1Rotation += 1;
+	 player1Rotation += 1;
 	}
 	if(upPressed)
 	{
-		player1X += Math.cos((player1Rotation) * Math.PI/180);
-		player1Y += Math.sin((player1Rotation) * Math.PI/180);
+	 player1X += Math.cos((player1Rotation) * Math.PI / 180);
+	 player1Y += Math.sin((player1Rotation) * Math.PI / 180);
 	}
 	if(downPressed)
 	{
-		player1X -= Math.cos((player1Rotation) * Math.PI/180);
-		player1Y -= Math.sin((player1Rotation) * Math.PI/180);
+	 player1X -= Math.cos((player1Rotation) * Math.PI / 180);
+	 player1Y -= Math.sin((player1Rotation) * Math.PI / 180);
 	}
-	if(shiftPressed && canFire) //bullet(x, y, speed, rotation)
+	if(zeroPressed && canFire)
 	{
-		var x1 = player1X + (.65 * player1W);
-		var y1 = player1Y + (.5 * player1H);
-		bullets.push(new Bullet(x1, y1, 1, player1Rotation));
-		canFire = false;
+	//Bullet(x, y, speed, rotation)
+	var x1 = player1X +  player1W/2 + 25*Math.cos((player1Rotation) * Math.PI / 180);
+	var y1 = player1Y +  player1W/2 + 25*Math.sin((player1Rotation) * Math.PI / 180);
+	bullets.push(new Bullet(x1, y1, 1.5, player1Rotation));
+	canFire = false;
+	}
+	if(aPressed)
+	{
+	 player2Rotation -= 1;
+	}
+	if(dPressed)
+	{
+	 player2Rotation += 1;
+	}
+	if(wPressed)
+	{
+	 player2X += Math.cos((player2Rotation) * Math.PI / 180);
+	 player2Y += Math.sin((player2Rotation) * Math.PI / 180);
+	}
+	if(sPressed)
+	{
+	 player2X -= Math.cos((player2Rotation) * Math.PI / 180);
+	 player2Y -= Math.sin((player2Rotation) * Math.PI / 180);
+	}
+	if(spacePressed && canFire2)
+	{
+	//Bullet(x, y, speed, rotation)
+	var x1 = player2X +  player2W/2 + 25*Math.cos((player2Rotation) * Math.PI / 180);
+	var y1 = player2Y +  player2W/2 + 25*Math.sin((player2Rotation) * Math.PI / 180);
+	bullets.push(new Bullet(x1, y1, 1.5, player2Rotation));
+	canFire2 = false;
 	}
 }
-
-function controls2()
-{
-	if(leftPressed2)
-	{
-		player2Rotation -= 1;
-	}
-	if(rightPressed2)
-	{
-		player2Rotation += 1;
-	}
-	if(upPressed2)
-	{
-		player2X += Math.cos((player2Rotation) * Math.PI/180);
-		player2Y += Math.sin((player2Rotation) * Math.PI/180);
-	}
-	if(downPressed2)
-	{
-		player2X -= Math.cos((player2Rotation) * Math.PI/180);
-		player2Y -= Math.sin((player2Rotation) * Math.PI/180);
-	}
-	if(spacePressed && canFire) //bullet(x, y, speed, rotation)
-	{
-		var x1 = player2X + (.65 * player2W);
-		var y1 = player2Y + (.5 * player2H);
-		bullets.push(new Bullet(x1, y1, 1, player2Rotation));
-		canFire = false;
-	}
-}
-
-function xy(x,y)
-{
-	this.x = x;
-	this.y = y;
-}
-
-function polygon(vertices, edges)
-{
-	this.vertex = vertices;
-	this.edge = edges;
-}
-
 function drawBullets()
 {
 	for(var i = 0; i < bullets.length; i++)
@@ -230,19 +341,11 @@ function drawBullets()
 		ctx.fillRect(bullets[i].x, bullets[i].y, 3, 3);
 		bullets[i].x += bullets[i].speed * Math.cos(bullets[i].rotation * Math.PI / 180);
 		bullets[i].y += bullets[i].speed * Math.sin(bullets[i].rotation * Math.PI / 180);
-		if(bullets[i].x <= 0 +3)
+		if((bullets[i].x <= 0 +3)  || (bullets[i].x >= 800 -3))
 		{
 			bullets[i].rotation = (bullets[i].rotation * (-1)) + 180;
 		}
-		if(bullets[i].x >= 800 -3)
-		{
-			bullets[i].rotation = (bullets[i].rotation * (-1)) + 180;
-		}
-		if(bullets[i].y <= 0 +3)
-		{
-			bullets[i].rotation = (bullets[i].rotation * (-1)) + 360;
-		}
-		if(bullets[i].y >= 600 -3)
+		if((bullets[i].y <= 0 +3) || (bullets[i].y >= 600 -3))
 		{
 			bullets[i].rotation = (bullets[i].rotation * (-1)) + 360;
 		}
@@ -277,7 +380,7 @@ function drawBullets()
 		var by3 = (Bx3 - Bp1) * Math.sin(Btheta) - (By3 - Bq1) * Math.cos(Btheta) + Bq1;
 		var bx4 = (Bx4 - Bp1) * Math.cos(Btheta) - (By4 - Bq1) * Math.sin(Btheta) + Bp1;
 		var by4 = (Bx4 - Bp1) * Math.sin(Btheta) - (By4 - Bq1) * Math.cos(Btheta) + Bq1;
-		///Same vertices and edges for each player
+		///Same vertices and edges for player 1
 		var p1 = player1X + player1W/2;
 		var q1 = player1Y + player1H/2;
 		var x1 = player1X;
@@ -307,7 +410,7 @@ function drawBullets()
 			 new xy(p1x4 - p1x2,p1y4 - p1y2),
 			 new xy(p1x3 - p1x4,p1y3 - p1y4),
 			 new xy(p1x1 - p1x3,p1y1 - p1y3)]
-			 var p1 = player1X + player1W/2;
+			///Same vertices and edges for player 2
 		p1 = player2X + player2W/2;
 		q1 = player2Y + player2H/2;
 		x1 = player2X;
@@ -318,7 +421,7 @@ function drawBullets()
 		y3 = player2Y + player2H;
 		x4 = player2X + player2W;
 		y4 = player2Y + player2H;
-		theta = player1Rotation * Math.PI / 180;
+		theta = player2Rotation * Math.PI / 180;
 		p1x1 = (x1-p1) * Math.cos(theta)-(y1-q1) * Math.sin(theta)+p1;
 		p1y1 = (x1-p1) * Math.sin(theta)-(y1-q1) * Math.cos(theta)+q1;
 		p1x2 = (x2-p1) * Math.cos(theta)-(y2-q1) * Math.sin(theta)+p1;
@@ -327,136 +430,134 @@ function drawBullets()
 		p1y3 = (x3-p1) * Math.sin(theta)-(y3-q1) * Math.cos(theta)+q1;
 		p1x4 = (x4-p1) * Math.cos(theta)-(y4-q1) * Math.sin(theta)+p1;
 		p1y4 = (x4-p1) * Math.sin(theta)-(y4-q1) * Math.cos(theta)+q1;
-		polygonCVertices = [
+		var polygonCVertices = [
 			 new xy(p1x1,p1y1),
 			 new xy(p1x2,p1y2),
 			 new xy(p1x4,p1y4),
 			 new xy(p1x3,p1y3)]
-		polygonCEdges = [
+		var polygonCEdges = [
 			 new xy(p1x2 - p1x1,p1y2 - p1y1),
 			 new xy(p1x4 - p1x2,p1y4 - p1y2),
 			 new xy(p1x3 - p1x4,p1y3 - p1y4),
 			 new xy(p1x1 - p1x3,p1y1 - p1y3)]
-		polygonBVertices = [
+		var polygonBVertices = [
 			 new xy(bx1,by1),
 			 new xy(bx2,by2),
 			 new xy(bx4,by4),
 			 new xy(bx3,by3)]
-		polygonBEdges = [
+		var polygonBEdges = [
 			 new xy(bx2 - bx1,by2 - by1),
 			 new xy(bx4 - bx2,by4 - by2),
 			 new xy(bx3 - bx4,by3 - by4),
 			 new xy(bx1 - bx3,by1 - by3)]
-		polygonA = new polygon(polygonAVertices,
+var polygonA = new polygon(polygonAVertices,
                            polygonAEdges)
-		polygonB = new polygon(polygonBVertices,
+var polygonB = new polygon(polygonBVertices,
                            polygonBEdges)
-		polygonC = new polygon(polygonCVertices,
-                           polygonCEdges)
+var polygonC = new polygon(polygonCVertices,
+                           polygonCEdges)	
 	
-	
-		if(sat(polygonA, polygonB))
-		{
-			console.log("Player 1 was hit");
-		}
-		if(sat(polygonC, polygonB))
-		{
-			console.log("Player 2 was hit");
-		}
+	if(sat(polygonA, polygonB))
+	{
+		//console.log("Player 1 was hit");
+		animations.push(new Animation(1, player1X - player1W/2, player1Y- player1H/2));
+	}
+	if(sat(polygonC, polygonB))
+	{
+		//console.log("Player 2 was hit");
+		animations.push(new Animation(1, player2X- player2W/2, player2Y- player2H/2));
+	}
 	}
 	
+	
+	
+	
 }
-
 function sat(polygonA,polygonB)
-{
-	var perpendicularLine = null;
-	var dot=0;
-	var perpendicularStack=[];
-	var amin=null;
-	var amax=null;
-	var bmin=null;
-	var bmax=null;
-	for(var i=0;i<polygonA.edge.length;i++)
-	{
-		perpendicularLine=new xy(-polygonA.edge[i].y,polygonA.edge[i].x);
-		perpendicularStack.push(perpendicularLine);
-	}
-	for(var i=0;i<polygonB.edge.length;i++)
-	{
-		perpendicularLine=new xy(-polygonB.edge[i].y,polygonB.edge[i].x);
-		perpendicularStack.push(perpendicularLine);
-	}
-	for(var i=0; i<perpendicularStack.length;i++)
-	{					
-		amin=null;
-		amax=null;
-		bmin=null;
-		bmax=null;
-		for(var j=0; j<polygonA.vertex.length;j++)
-		{
-			dot=polygonA.vertex[j].x*perpendicularStack[i].x+polygonA.vertex[j].y*perpendicularStack[i].y;
-			if(amax===null||dot>amax)
 			{
-				amax=dot;
-			}
-			if(amin===null||dot<amin)
-			{
-				amin=dot;
-			}
-		}
-		for(var j=0; j<polygonB.vertex.length;j++)
-		{
-			dot=polygonB.vertex[j].x*perpendicularStack[i].x+polygonB.vertex[j].y*perpendicularStack[i].y;
-			if(bmax===null||dot>bmax)
-			{
-				bmax=dot;
-			}
-			if(bmin===null||dot<bmin)
-			{
-				bmin=dot;
-			}
-		}
+				var perpendicularLine = null;
+				var dot=0;
+				var perpendicularStack=[];
+				var amin=null;
+				var amax=null;
+				var bmin=null;
+				var bmax=null;
+				for(var i=0;i<polygonA.edge.length;i++)
+				{
+					perpendicularLine=new xy(-polygonA.edge[i].y,polygonA.edge[i].x);
+					perpendicularStack.push(perpendicularLine);
+				}
+				for(var i=0;i<polygonB.edge.length;i++)
+				{
+					perpendicularLine=new xy(-polygonB.edge[i].y,polygonB.edge[i].x);
+					perpendicularStack.push(perpendicularLine);
+				}
+				for(var i=0; i<perpendicularStack.length;i++)
+				{					
+					amin=null;
+					amax=null;
+					bmin=null;
+					bmax=null;
+					for(var j=0; j<polygonA.vertex.length;j++)
+					{
+						dot=polygonA.vertex[j].x*perpendicularStack[i].x+polygonA.vertex[j].y*perpendicularStack[i].y;
+						if(amax===null||dot>amax)
+						{
+							amax=dot;
+						}
+						if(amin===null||dot<amin)
+						{
+							amin=dot;
+						}
+					}
+					for(var j=0; j<polygonB.vertex.length;j++)
+					{
+						dot=polygonB.vertex[j].x*perpendicularStack[i].x+polygonB.vertex[j].y*perpendicularStack[i].y;
+						if(bmax===null||dot>bmax)
+						{
+							bmax=dot;
+						}
+						if(bmin===null||dot<bmin)
+						{
+							bmin=dot;
+						}
+					}
 					
-		if((amin<bmax&&amin>bmin)||(bmin<amax&&bmin>amin))
-		{
-			continue;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-function Bullet(x, y, speed, rotation)
-{
-	this.x = x;
-	this.y = y;
-	this.speed = speed;
-	this.rotation = rotation;
-}
-
+					if((amin<bmax&&amin>bmin)||(bmin<amax&&bmin>amin))
+					{
+						continue;
+					}
+					else
+					{
+						return false;
+					}
+				}
+				return true;
+			};
 function resetBullet()
 {
 	canFire = true;
+}
+
+function resetBullet2()
+{
+	canFire2 = true;
 }
 
 function draw()
 {
 	ctx.clearRect(0,0,800,600);
 	controls();
-	controls2();
-	//drawImageRot(img, x, y, width, height, deg)
-	drawImageRot(tank1, player1X, player1Y,player1W, player1H, player1Rotation);
-	drawImageRot(tank2, player2X, player2Y,player2W, player2H, player2Rotation);
 	drawBullets();
+	
+	///drawImageRot(img,x,y,width,height,deg)
+	drawImageRot(tank1, player1X, player1Y, player1W, player1H, player1Rotation);
+	drawImageRot(tank2, player2X, player2Y, player2W, player2H, player2Rotation);
+	drawAnimations();
 }
-
-
-
 setInterval(draw, 10);
 setInterval(resetBullet, 500);
+setInterval(resetBullet2, 500);
 </script>
 </body>
 </html>
